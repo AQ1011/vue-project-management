@@ -24,10 +24,5 @@ onMounted(() => {
   <div>
     <h1>Hello world</h1>
     <RouterLink :to="{ name: '/projects/[id]', params: { id: 1 } }">Go to Project 1</RouterLink>
-    <ul>
-      <li v-for="project in projects" :key="project.id">
-        {{ project.name }}
-      </li>
-    </ul>
   </div>
 </template>
