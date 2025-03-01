@@ -19,8 +19,9 @@ export default defineConfigWithVueTs(
   },
 
   {
-    name: 'vue/multi-word-component-names',
-    ignores: ['**/pages/**'],
+    rules: {
+      'vue/multi-word-component-names': 'off',
+    },
   },
 
   pluginVue.configs['flat/essential'],
