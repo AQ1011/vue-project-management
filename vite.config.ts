@@ -23,9 +23,16 @@ export default defineConfig({
         /\.vue\?vue/, // .vue
         /\.md$/, // .md
       ],
-      imports: ['vue', VueRouterAutoImports],
+      imports: [
+        'vue',
+        VueRouterAutoImports,
+        {
+          pinia: ['defineStore', 'acceptHMRUpdate', 'storeRefs'],
+        },
+      ],
       dts: true,
       viteOptimizeDeps: true,
+      dirs: ['src/stores'],
     }),
     vue({
       template: {
