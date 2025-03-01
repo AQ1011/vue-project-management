@@ -6,7 +6,7 @@ console.log(supabase)
 </script>
 
 <template>
-  <main>
+  <main class="">
     <RouterView />
   </main>
 </template>
