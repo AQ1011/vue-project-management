@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { Button } from '@/components/ui/button'
-import SidebarLink from './SidebarLink.vue'
-
 const links = [
   {
     title: 'Dashboard',
@@ -26,17 +23,29 @@ const accountLinks = [
     to: '/profile',
     icon: 'lucide:user',
   },
+
   {
     title: 'Settings',
     to: '/settings',
     icon: 'lucide:settings',
   },
   {
-    title: 'Sign out',
-    to: '/signout',
+    title: 'Sign Out',
     icon: 'lucide:log-out',
   },
 ]
+
+const router = useRouter()
+
+const executeAction = async (linkTitle: string) => {
+  if (linkTitle === 'Sign Out') {
+    const { logout } = await import('@/utils/supaAuth')
+    const isLoggedOut = await logout()
+    if (isLoggedOut) {
+      router.push('/login')
+    }
+  }
+}
 </script>
 
 <template>
@@ -55,11 +64,11 @@ const accountLinks = [
 
     <nav class="flex flex-col gap-2 justify-between h-full relative">
       <div>
-        <SidebarLink :links="links" />
+        <SidebarLinks :links="links" />
       </div>
 
       <div class="border-y text-center bg-background py-3">
-        <SidebarLink :links="accountLinks" />
+        <SidebarLinks :links="accountLinks" @actionClicked="executeAction" />
       </div>
     </nav>
   </aside>
