@@ -1,34 +1,30 @@
 <script setup lang="ts">
-import { projectQuery } from '@/utils/supaQueries'
-import type { Project } from '@/utils/supaQueries'
+import { storeToRefs } from 'pinia'
 
-const route = useRoute('/projects/[slug]')
+const { slug } = useRoute('/projects/[slug]').params
 
-const project = ref<Project | null>(null)
-
-usePageStore().pageData.title = `Project ${project.value?.name || ''}`
+const projectsLoader = useProjectsStore()
+const { project } = storeToRefs(projectsLoader)
+const { getProject, updateProject } = projectsLoader
 
 watch(
   () => project.value?.name,
   () => {
-    usePageStore().pageData.title = `Project ${project.value?.name || ''}`
+    usePageStore().pageData.title = `Project: ${project.value?.name || ''}`
   },
 )
 
-const getProjects = async () => {
-  const { data, error, status } = await projectQuery(route.params.slug)
-
-  if (error) useErrorStore().setError({ error, customCode: status })
-
-  project.value = data
-}
-
-await getProjects()
+await getProject(slug)
 </script>
 
 <template>
   <Table v-if="project">
-    <TableRow> </TableRow>
+    <TableRow>
+      <TableHead> Name </TableHead>
+      <TableCell>
+        <AppInPlaceEditText v-model="project.name" @commit="updateProject" />
+      </TableCell>
+    </TableRow>
     <TableRow>
       <TableHead> Description </TableHead>
       <TableCell>
